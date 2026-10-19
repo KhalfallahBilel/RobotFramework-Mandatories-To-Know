@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% block title %}Data Table{% endblock %}
+{% block content %}
+<div class="container">
+  <div class="page-header">
+    <div>
+      <h1 class="page-title">Data Table</h1>
+      <p class="page-subtitle">Sortable, searchable product data table</p>
+    </div>
+  </div>
+
+  <div style="margin-bottom:1rem;display:flex;gap:0.75rem;flex-wrap:wrap;align-items:center">
+    <input type="text" id="live-search" placeholder="🔍 Live search..." style="flex:1;min-width:200px;max-width:400px">
+    <span style="color:var(--text-muted);font-size:0.875rem" id="row-count">{{ products|length }} rows</span>
+  </div>
+
+  <div class="table-container">
+    <table id="products-table">
+      <thead>
+        <tr>
+          <th data-sort="id" id="th-id">ID</th>
+          <th data-sort="name" id="th-name">Product Name</th>
+          <th data-sort="category" id="th-category">Category</th>
+          <th data-sort="price" id="th-price">Price</th>
+          <th data-sort="stock" id="th-stock">Stock</th>
+          <th id="th-status">Status</th>
+          <th id="th-actions">Actions</th>
+        </tr>
+      </thead>
+      <tbody id="products-tbody">
+        {% for p in products %}
+        <tr id="table-row-{{ p.id }}" data-product-id="{{ p.id }}">
+          <td id="row-id-{{ p.id }}">#{{ p.id }}</td>
+          <td id="row-name-{{ p.id }}" style="font-weight:600">{{ p.name }}</td>
+          <td id="row-category-{{ p.id }}"><span class="badge badge-primary">{{ p.category }}</span></td>
+          <td id="row-price-{{ p.id }}" style="color:var(--accent);font-weight:600">${{ "%.2f"|format(p.price) }}</td>
+          <td id="row-stock-{{ p.id }}">{{ p.stock }}</td>
+          <td id="row-status-{{ p.id }}">
+            {% if p.stock == 0 %}
+              <span class="badge badge-danger" id="status-{{ p.id }}">Out of Stock</span>
+            {% elif p.stock < 30 %}
+              <span class="badge badge-warning" id="status-{{ p.id }}">Low Stock</span>
+            {% else %}
+              <span class="badge badge-success" id="status-{{ p.id }}">In Stock</span>
+            {% endif %}
+          </td>
+          <td>
+            <a href="{{ url_for('product_detail', product_id=p.id) }}" class="btn btn-secondary btn-sm" id="table-btn-view-{{ p.id }}">View</a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <div style="margin-top:2rem">
+    <h2 class="section-title">Summary Statistics</h2>
+    <div class="card-grid" style="grid-template-columns:repeat(auto-fill,minmax(160px,1fr))">
+      <div class="stat-card" id="summary-total">
+        <div class="stat-value">{{ products|length }}</div>
+        <div class="stat-label">Total Products</div>
+      </div>
+      <div class="stat-card" id="summary-in-stock">
+        <div class="stat-value">{{ products|selectattr('stock', 'gt', 0)|list|length }}</div>
+        <div class="stat-label">In Stock</div>
+      </div>
+      <div class="stat-card" id="summary-out-stock">
+        <div class="stat-value">{{ products|selectattr('stock', 'equalto', 0)|list|length }}</div>
+        <div class="stat-label">Out of Stock</div>
+      </div>
+      <div class="stat-card" id="summary-total-value">
+        <div class="stat-value" style="font-size:1.5rem">${{ "%.0f"|format(products|sum(attribute='price')) }}</div>
+        <div class="stat-label">Catalog Value</div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

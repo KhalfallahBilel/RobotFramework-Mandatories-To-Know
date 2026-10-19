@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% block title %}Contact Us{% endblock %}
+{% block content %}
+<div class="container-narrow">
+  <div style="text-align:center;margin-bottom:2rem">
+    <div style="font-size:3rem;margin-bottom:0.75rem">📬</div>
+    <h1 style="font-size:1.75rem;font-weight:700;margin-bottom:0.5rem">Contact Us</h1>
+    <p style="color:var(--text-muted)">Fill in the form below. We'll get back to you soon.</p>
+  </div>
+
+  {% if success or submitted %}
+  <div class="form-alert success" id="contact-success-message" role="alert">
+    ✅ Thank you! Your message has been sent successfully.
+  </div>
+  {% endif %}
+
+  <div class="form-card" id="contact-form-container">
+    <form method="POST" action="{{ url_for('contact') }}" id="contact-form" novalidate>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="first_name">First Name <span class="required">*</span></label>
+          <input type="text" id="first_name" name="first_name" placeholder="Alice"
+            class="{{ 'is-invalid' if errors.get('first_name') else '' }}"
+            value="{{ request.form.get('first_name', '') }}" required>
+          {% if errors.get('first_name') %}<span class="invalid-feedback" id="error-first-name">{{ errors.first_name }}</span>{% endif %}
+        </div>
+        <div class="form-group">
+          <label for="last_name">Last Name <span class="required">*</span></label>
+          <input type="text" id="last_name" name="last_name" placeholder="Dupont"
+            class="{{ 'is-invalid' if errors.get('last_name') else '' }}"
+            value="{{ request.form.get('last_name', '') }}" required>
+          {% if errors.get('last_name') %}<span class="invalid-feedback" id="error-last-name">{{ errors.last_name }}</span>{% endif %}
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="email">Email Address <span class="required">*</span></label>
+        <input type="email" id="email" name="email" placeholder="alice@example.com"
+          class="{{ 'is-invalid' if errors.get('email') else '' }}"
+          value="{{ request.form.get('email', '') }}" required>
+        {% if errors.get('email') %}<span class="invalid-feedback" id="error-email">{{ errors.email }}</span>{% endif %}
+      </div>
+      <div class="form-group">
+        <label for="subject">Subject <span class="required">*</span></label>
+        <select id="subject" name="subject" class="{{ 'is-invalid' if errors.get('subject') else '' }}" required>
+          <option value="">-- Select a subject --</option>
+          <option value="general" {% if request.form.get('subject') == 'general' %}selected{% endif %}>General Inquiry</option>
+          <option value="support" {% if request.form.get('subject') == 'support' %}selected{% endif %}>Technical Support</option>
+          <option value="billing" {% if request.form.get('subject') == 'billing' %}selected{% endif %}>Billing</option>
+          <option value="feedback" {% if request.form.get('subject') == 'feedback' %}selected{% endif %}>Feedback</option>
+          <option value="other" {% if request.form.get('subject') == 'other' %}selected{% endif %}>Other</option>
+        </select>
+        {% if errors.get('subject') %}<span class="invalid-feedback" id="error-subject">{{ errors.subject }}</span>{% endif %}
+      </div>
+      <div class="form-group">
+        <label for="message">Message <span class="required">*</span></label>
+        <textarea id="message" name="message" rows="5" placeholder="Write your message here (minimum 10 characters)..."
+          class="{{ 'is-invalid' if errors.get('message') else '' }}" required>{{ request.form.get('message', '') }}</textarea>
+        {% if errors.get('message') %}<span class="invalid-feedback" id="error-message">{{ errors.message }}</span>{% endif %}
+      </div>
+      <div class="form-group">
+        <label>Overall Rating</label>
+        <div class="rating-group" id="rating-group">
+          {% for i in [1,2,3,4,5] %}
+          <input type="radio" id="rating-{{ i }}" name="rating" value="{{ i }}"
+            {% if request.form.get('rating') == i|string %}checked{% endif %}>
+          <label for="rating-{{ i }}">{{ i }}</label>
+          {% endfor %}
+        </div>
+        {% if errors.get('rating') %}<span class="invalid-feedback">{{ errors.rating }}</span>{% endif %}
+      </div>
+      <div class="form-group">
+        <label class="form-check" for="newsletter">
+          <input type="checkbox" id="newsletter" name="newsletter"
+            {% if request.form.get('newsletter') %}checked{% endif %}>
+          Subscribe to our newsletter
+        </label>
+      </div>
+      <button type="submit" class="btn btn-primary" id="contact-submit-btn" style="width:100%">Send Message</button>
+    </form>
+  </div>
+</div>
+{% endblock %}

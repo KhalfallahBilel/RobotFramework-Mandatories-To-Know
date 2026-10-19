@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+{% block content %}
+<section class="hero">
+  <div style="position:relative;z-index:1;max-width:700px;margin:0 auto">
+    <div class="hero-badge">🤖 Robot Framework Training App</div>
+    <h1>A Playground for<br>Test Automation</h1>
+    <p>A fully-featured web application with forms, tables, APIs, dynamic content and CRUD operations — built for your Robot Framework learning journey.</p>
+    <div class="hero-actions">
+      <a href="{{ url_for('products') }}" class="btn btn-primary btn-lg" id="hero-btn-products">Browse Products</a>
+      <a href="{{ url_for('login') }}" class="btn btn-secondary btn-lg" id="hero-btn-login">Login to Test</a>
+    </div>
+    <div class="hero-features">
+      <div class="hero-feature"><div class="dot"></div>Login / Register</div>
+      <div class="hero-feature"><div class="dot"></div>CRUD Forms</div>
+      <div class="hero-feature"><div class="dot"></div>Data Tables</div>
+      <div class="hero-feature"><div class="dot"></div>REST API</div>
+      <div class="hero-feature"><div class="dot"></div>Dynamic Elements</div>
+      <div class="hero-feature"><div class="dot"></div>Alerts & Modals</div>
+    </div>
+  </div>
+</section>
+
+<section class="container">
+  <p class="section-label">What you can test</p>
+  <h2 class="section-title">Pages & Features Available</h2>
+  <div class="card-grid">
+    <a href="{{ url_for('login') }}" class="card" id="home-card-login" style="text-decoration:none;color:inherit">
+      <div style="font-size:2rem;margin-bottom:0.75rem">🔐</div>
+      <div class="card-title">Authentication</div>
+      <div class="card-body">Login, logout, registration with form validation. Session management.</div>
+    </a>
+    <a href="{{ url_for('products') }}" class="card" id="home-card-products" style="text-decoration:none;color:inherit">
+      <div style="font-size:2rem;margin-bottom:0.75rem">📦</div>
+      <div class="card-title">Products (CRUD)</div>
+      <div class="card-body">Create, read, update, delete products. Search and filter. Admin access control.</div>
+    </a>
+    <a href="{{ url_for('contact') }}" class="card" id="home-card-contact" style="text-decoration:none;color:inherit">
+      <div style="font-size:2rem;margin-bottom:0.75rem">📋</div>
+      <div class="card-title">Contact Form</div>
+      <div class="card-body">Complex form with checkboxes, radio buttons, textarea, validation errors.</div>
+    </a>
+    <a href="{{ url_for('table') }}" class="card" id="home-card-table" style="text-decoration:none;color:inherit">
+      <div style="font-size:2rem;margin-bottom:0.75rem">📊</div>
+      <div class="card-title">Data Table</div>
+      <div class="card-body">Sortable, filterable table with pagination. Live search.</div>
+    </a>
+    <a href="{{ url_for('alerts') }}" class="card" id="home-card-alerts" style="text-decoration:none;color:inherit">
+      <div style="font-size:2rem;margin-bottom:0.75rem">🔔</div>
+      <div class="card-title">Alerts & Modals</div>
+      <div class="card-body">Tabs, accordion, modals, tooltips — all interactive UI components.</div>
+    </a>
+    <a href="{{ url_for('dynamic') }}" class="card" id="home-card-dynamic" style="text-decoration:none;color:inherit">
+      <div style="font-size:2rem;margin-bottom:0.75rem">⚡</div>
+      <div class="card-title">Dynamic Content</div>
+      <div class="card-body">Elements that appear after delay, lazy-loading, countdown timers.</div>
+    </a>
+  </div>
+
+  <div style="margin-top:3rem;padding:1.5rem;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius)">
+    <p class="section-label">REST API</p>
+    <h2 class="section-title" style="margin-bottom:0.5rem">API Endpoints</h2>
+    <p style="color:var(--text-muted);margin-bottom:1.25rem">All endpoints available at <code style="background:rgba(108,99,255,0.15);padding:0.1rem 0.5rem;border-radius:4px">http://localhost:5000/api/</code></p>
+    <div class="table-container">
+      <table id="api-endpoints-table">
+        <thead>
+          <tr><th>Method</th><th>Endpoint</th><th>Description</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><span class="badge badge-success">GET</span></td><td><code>/api/status</code></td><td>Health check</td></tr>
+          <tr><td><span class="badge badge-success">GET</span></td><td><code>/api/products</code></td><td>List all products</td></tr>
+          <tr><td><span class="badge badge-success">GET</span></td><td><code>/api/products/&lt;id&gt;</code></td><td>Get product by ID</td></tr>
+          <tr><td><span class="badge badge-primary">POST</span></td><td><code>/api/products</code></td><td>Create product</td></tr>
+          <tr><td><span class="badge badge-warning">PUT</span></td><td><code>/api/products/&lt;id&gt;</code></td><td>Update product</td></tr>
+          <tr><td><span class="badge badge-danger">DELETE</span></td><td><code>/api/products/&lt;id&gt;</code></td><td>Delete product</td></tr>
+          <tr><td><span class="badge badge-success">GET</span></td><td><code>/api/contacts</code></td><td>List contacts</td></tr>
+          <tr><td><span class="badge badge-success">GET</span></td><td><code>/api/users/me</code></td><td>Current user info</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+{% endblock %}

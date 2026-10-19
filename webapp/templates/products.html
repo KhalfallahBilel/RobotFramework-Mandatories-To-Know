@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% block title %}Products{% endblock %}
+{% block content %}
+<div class="container">
+  <div class="page-header">
+    <div>
+      <h1 class="page-title">Products</h1>
+      <p class="page-subtitle">{{ products|length }} product(s) found</p>
+    </div>
+    {% if session.role == 'admin' %}
+    <a href="{{ url_for('product_new') }}" class="btn btn-primary" id="btn-add-product">➕ Add Product</a>
+    {% endif %}
+  </div>
+
+  <!-- FILTER BAR -->
+  <form method="GET" action="{{ url_for('products') }}" id="product-filter-form">
+    <div class="filter-bar">
+      <input type="text" name="search" id="search-input" class="search-input"
+        placeholder="🔍 Search products..." value="{{ search }}">
+      <select name="category" id="category-filter">
+        <option value="">All Categories</option>
+        {% for cat in categories %}
+        <option value="{{ cat }}" {% if cat == category_filter %}selected{% endif %}>{{ cat }}</option>
+        {% endfor %}
+      </select>
+      <button type="submit" class="btn btn-secondary" id="btn-filter">Filter</button>
+      <a href="{{ url_for('products') }}" class="btn btn-secondary" id="btn-clear-filter">Clear</a>
+    </div>
+  </form>
+
+  {% if products %}
+  <div class="card-grid" id="products-grid">
+    {% for product in products %}
+    <div class="product-card" id="product-card-{{ product.id }}">
+      <div class="product-header">
+        <div class="product-name" id="product-name-{{ product.id }}">{{ product.name }}</div>
+        <span class="product-category" id="product-category-{{ product.id }}">{{ product.category }}</span>
+      </div>
+      <div class="product-desc" id="product-desc-{{ product.id }}">{{ product.description }}</div>
+      <div class="product-footer">
+        <span class="product-price" id="product-price-{{ product.id }}">${{ "%.2f"|format(product.price) }}</span>
+        <span class="product-stock {% if product.stock == 0 %}out{% endif %}" id="product-stock-{{ product.id }}">
+          {% if product.stock == 0 %}Out of Stock{% else %}{{ product.stock }} in stock{% endif %}
+        </span>
+      </div>
+      <div style="display:flex;gap:0.5rem;margin-top:0.5rem;flex-wrap:wrap">
+        <a href="{{ url_for('product_detail', product_id=product.id) }}" class="btn btn-secondary btn-sm" id="btn-detail-{{ product.id }}">View</a>
+        {% if session.role == 'admin' %}
+        <a href="{{ url_for('product_edit', product_id=product.id) }}" class="btn btn-secondary btn-sm" id="btn-edit-{{ product.id }}">Edit</a>
+        <form method="POST" action="{{ url_for('product_delete', product_id=product.id) }}" style="display:inline" id="delete-form-{{ product.id }}">
+          <button type="submit" class="btn btn-danger btn-sm" id="btn-delete-{{ product.id }}"
+            data-confirm="Are you sure you want to delete '{{ product.name }}'?">Delete</button>
+        </form>
+        {% endif %}
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="empty-state" id="products-empty">
+    <div class="empty-icon">📭</div>
+    <h3>No Products Found</h3>
+    <p>Try adjusting your filters or search terms.</p>
+    <a href="{{ url_for('products') }}" class="btn btn-secondary" style="margin-top:1rem">Reset Filters</a>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

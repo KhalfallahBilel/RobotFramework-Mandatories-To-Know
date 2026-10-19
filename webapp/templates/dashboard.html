@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+<div class="container">
+  <div class="page-header">
+    <div>
+      <h1 class="page-title" id="dashboard-title">Welcome, {{ session.name }}!</h1>
+      <p class="page-subtitle">Role: <span class="badge {% if session.role == 'admin' %}badge-warning{% else %}badge-primary{% endif %}" id="dashboard-role">{{ session.role }}</span></p>
+    </div>
+    <a href="{{ url_for('logout') }}" class="btn btn-outline-sm" id="dashboard-logout-btn">Logout</a>
+  </div>
+
+  <div class="card-grid" style="grid-template-columns:repeat(auto-fill,minmax(200px,1fr));margin-bottom:2.5rem">
+    <div class="stat-card" id="stat-products">
+      <div class="stat-icon">📦</div>
+      <div class="stat-value">{{ stats.products }}</div>
+      <div class="stat-label">Products</div>
+    </div>
+    <div class="stat-card" id="stat-contacts">
+      <div class="stat-icon">📋</div>
+      <div class="stat-value">{{ stats.contacts }}</div>
+      <div class="stat-label">Contact Submissions</div>
+    </div>
+    <div class="stat-card" id="stat-orders">
+      <div class="stat-icon">🛒</div>
+      <div class="stat-value">{{ stats.orders }}</div>
+      <div class="stat-label">Orders</div>
+    </div>
+    <div class="stat-card" id="stat-users">
+      <div class="stat-icon">👥</div>
+      <div class="stat-value">{{ stats.users }}</div>
+      <div class="stat-label">Users</div>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-bottom:2rem">
+    <div class="form-card">
+      <p class="section-label">Quick Actions</p>
+      <div style="display:flex;flex-direction:column;gap:0.75rem;margin-top:1rem">
+        <a href="{{ url_for('products') }}" class="btn btn-secondary" id="dash-btn-products">📦 View Products</a>
+        {% if session.role == 'admin' %}
+        <a href="{{ url_for('product_new') }}" class="btn btn-primary" id="dash-btn-new-product">➕ Add New Product</a>
+        {% endif %}
+        <a href="{{ url_for('contact') }}" class="btn btn-secondary" id="dash-btn-contact">📋 Submit Contact Form</a>
+        <a href="{{ url_for('table') }}" class="btn btn-secondary" id="dash-btn-table">📊 View Data Table</a>
+      </div>
+    </div>
+    <div class="form-card">
+      <p class="section-label">Your Session Info</p>
+      <div style="margin-top:1rem;display:flex;flex-direction:column;gap:0.75rem;font-size:0.875rem">
+        <div style="display:flex;justify-content:space-between;padding:0.5rem 0;border-bottom:1px solid var(--border)">
+          <span style="color:var(--text-muted)">Username</span>
+          <span id="session-username" style="font-weight:600">{{ session.username }}</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;padding:0.5rem 0;border-bottom:1px solid var(--border)">
+          <span style="color:var(--text-muted)">Full Name</span>
+          <span id="session-name" style="font-weight:600">{{ session.name }}</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;padding:0.5rem 0">
+          <span style="color:var(--text-muted)">Role</span>
+          <span id="session-role" style="font-weight:600;text-transform:capitalize">{{ session.role }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {% if session.role == 'admin' %}
+  <div class="form-card" id="admin-panel">
+    <p class="section-label" style="color:var(--warning)">⚠ Admin Panel</p>
+    <h2 class="section-title" style="margin:0.5rem 0 1rem">Admin Controls</h2>
+    <p style="color:var(--text-muted);margin-bottom:1rem;font-size:0.875rem">As admin, you have full CRUD access to products.</p>
+    <a href="{{ url_for('product_new') }}" class="btn btn-primary" id="admin-create-product">Create New Product</a>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

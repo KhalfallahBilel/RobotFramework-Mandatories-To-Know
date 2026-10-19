@@ -1,0 +1,209 @@
+{% extends "base.html" %}
+{% block title %}Dynamic Content{% endblock %}
+{% block content %}
+<div class="container">
+  <div class="page-header">
+    <div>
+      <h1 class="page-title">Dynamic Content</h1>
+      <p class="page-subtitle">Elements that appear after delays — essential for testing with waits</p>
+    </div>
+  </div>
+
+  <div class="card-grid">
+    <!-- DELAYED ELEMENT -->
+    <div class="card" id="card-delayed">
+      <h2 class="card-title">⏱ Delayed Element</h2>
+      <p class="card-body" style="margin-bottom:1rem">Clicks the button, then element appears after 2 seconds.</p>
+      <button class="btn btn-primary btn-sm" id="btn-load-delayed" onclick="loadDelayed()">Load Element</button>
+      <div id="delayed-result" style="margin-top:1rem;display:none">
+        <div class="form-alert success" id="delayed-message">✅ Element loaded after delay!</div>
+        <p id="delayed-text" style="font-size:0.875rem;color:var(--text-muted);margin-top:0.5rem">Timestamp: <span id="delayed-timestamp"></span></p>
+      </div>
+    </div>
+
+    <!-- COUNTDOWN TIMER -->
+    <div class="card" id="card-countdown">
+      <h2 class="card-title">⏰ Countdown Timer</h2>
+      <p class="card-body" style="margin-bottom:1rem">A 10-second countdown. Test waiting for completion.</p>
+      <button class="btn btn-primary btn-sm" id="btn-start-countdown" onclick="startCountdown('countdown-display', 10)">Start Countdown</button>
+      <div style="margin-top:1rem;text-align:center;font-size:3rem;font-weight:700;color:var(--primary)" id="countdown-display">10</div>
+    </div>
+
+    <!-- SPINNER / LOADING -->
+    <div class="card" id="card-spinner">
+      <h2 class="card-title">🔄 Loading Spinner</h2>
+      <p class="card-body" style="margin-bottom:1rem">Simulates an async data load (3 seconds).</p>
+      <button class="btn btn-primary btn-sm" id="btn-show-spinner" onclick="showSpinnerDemo()">Load Data</button>
+      <div id="spinner-container" style="margin-top:1rem;display:none;text-align:center">
+        <div class="spinner" id="loading-spinner"></div>
+        <p style="margin-top:0.75rem;color:var(--text-muted);font-size:0.875rem" id="loading-text">Loading data...</p>
+      </div>
+      <div id="spinner-result" style="display:none">
+        <div class="form-alert success" id="spinner-success">✅ Data loaded successfully!</div>
+        <p id="spinner-data" style="font-size:0.875rem;color:var(--text-muted)">Retrieved 5 records.</p>
+      </div>
+    </div>
+
+    <!-- TOGGLE VISIBILITY -->
+    <div class="card" id="card-toggle">
+      <h2 class="card-title">👁 Toggle Visibility</h2>
+      <p class="card-body" style="margin-bottom:1rem">Show/hide elements — test Element Should Be Visible/Hidden.</p>
+      <button class="btn btn-secondary btn-sm" id="btn-toggle-element" onclick="toggleElement('hidden-element')">Toggle</button>
+      <div id="hidden-element" style="margin-top:1rem;padding:0.75rem;background:rgba(108,99,255,0.1);border-radius:var(--radius-sm);border:1px solid var(--border);display:none" aria-hidden="true">
+        <strong>🎉 I was hidden and now I'm visible!</strong>
+        <p style="font-size:0.8rem;color:var(--text-muted)">Robot can detect this change with Wait Until Element Is Visible.</p>
+      </div>
+    </div>
+
+    <!-- DYNAMIC LIST -->
+    <div class="card" id="card-dynamic-list">
+      <h2 class="card-title">📋 Dynamic List</h2>
+      <p class="card-body" style="margin-bottom:1rem">Add items to a list and verify count.</p>
+      <div style="display:flex;gap:0.5rem;margin-bottom:0.75rem">
+        <input type="text" id="new-item-input" placeholder="Enter item name..." style="flex:1;margin:0">
+        <button class="btn btn-primary btn-sm" id="btn-add-item" onclick="addListItem()">Add</button>
+      </div>
+      <ul id="dynamic-list" style="list-style:none;display:flex;flex-direction:column;gap:0.35rem">
+        <li class="tag" id="list-item-1">Item 1</li>
+        <li class="tag" id="list-item-2">Item 2</li>
+      </ul>
+      <p style="margin-top:0.75rem;font-size:0.8rem;color:var(--text-muted)">
+        Total items: <span id="list-count" style="font-weight:700;color:var(--accent)">2</span>
+      </p>
+    </div>
+
+    <!-- FORM WITH LIVE VALIDATION -->
+    <div class="card" id="card-live-validation">
+      <h2 class="card-title">✅ Live Validation</h2>
+      <p class="card-body" style="margin-bottom:1rem">Fields validate as you type.</p>
+      <div class="form-group" style="margin-bottom:0.75rem">
+        <label for="live-email">Email</label>
+        <input type="email" id="live-email" placeholder="test@example.com" oninput="validateEmail(this)">
+        <span id="live-email-feedback" class="form-hint"></span>
+      </div>
+      <div class="form-group" style="margin-bottom:0">
+        <label for="live-password">Password Strength</label>
+        <input type="password" id="live-password" placeholder="Type a password" oninput="checkStrength(this)">
+        <div class="progress-bar-container" style="margin-top:0.5rem">
+          <div class="progress-bar" id="password-strength-bar" style="width:0%;background:var(--danger)"></div>
+        </div>
+        <span id="password-strength-label" class="form-hint"></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- INFINITE-LIKE PAGINATION -->
+  <div style="margin-top:2rem" id="pagination-section">
+    <h2 class="section-title">Pagination</h2>
+    <div id="paginated-content" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1rem;margin-bottom:1rem">
+      {% for i in range(1, 7) %}
+      <div class="card" id="page-item-{{ i }}" style="cursor:default">
+        <div class="card-title">Item {{ i }}</div>
+        <div class="card-body">Page 1 item {{ i }}</div>
+      </div>
+      {% endfor %}
+    </div>
+    <div style="display:flex;justify-content:center;gap:0.5rem;flex-wrap:wrap" id="pagination-controls">
+      <button class="btn btn-secondary btn-sm" id="page-prev" onclick="changePage(-1)" disabled>← Prev</button>
+      <span class="btn btn-primary btn-sm" id="page-current" style="cursor:default">Page 1 of 3</span>
+      <button class="btn btn-secondary btn-sm" id="page-next" onclick="changePage(1)">Next →</button>
+    </div>
+  </div>
+</div>
+
+<script>
+let pageNum = 1;
+const totalPages = 3;
+
+function loadDelayed() {
+  const btn = document.getElementById('btn-load-delayed');
+  btn.disabled = true;
+  btn.textContent = 'Loading...';
+  setTimeout(() => {
+    const res = document.getElementById('delayed-result');
+    res.style.display = 'block';
+    document.getElementById('delayed-timestamp').textContent = new Date().toLocaleTimeString();
+    btn.disabled = false;
+    btn.textContent = 'Load Element';
+  }, 2000);
+}
+
+function showSpinnerDemo() {
+  const btn = document.getElementById('btn-show-spinner');
+  btn.disabled = true;
+  document.getElementById('spinner-container').style.display = 'block';
+  document.getElementById('spinner-result').style.display = 'none';
+  setTimeout(() => {
+    document.getElementById('spinner-container').style.display = 'none';
+    document.getElementById('spinner-result').style.display = 'block';
+    btn.disabled = false;
+  }, 3000);
+}
+
+function toggleElement(id) {
+  const el = document.getElementById(id);
+  const hidden = el.style.display === 'none';
+  el.style.display = hidden ? 'block' : 'none';
+  el.setAttribute('aria-hidden', hidden ? 'false' : 'true');
+}
+
+let itemCount = 2;
+function addListItem() {
+  const input = document.getElementById('new-item-input');
+  const val = input.value.trim();
+  if (!val) return;
+  itemCount++;
+  const li = document.createElement('li');
+  li.className = 'tag';
+  li.id = `list-item-${itemCount}`;
+  li.textContent = val;
+  document.getElementById('dynamic-list').appendChild(li);
+  document.getElementById('list-count').textContent = itemCount;
+  input.value = '';
+}
+
+function validateEmail(input) {
+  const fb = document.getElementById('live-email-feedback');
+  if (!input.value) { fb.textContent = ''; fb.style.color = ''; return; }
+  const valid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input.value);
+  fb.textContent = valid ? '✅ Valid email' : '❌ Invalid email format';
+  fb.style.color = valid ? 'var(--success)' : 'var(--danger)';
+}
+
+function checkStrength(input) {
+  const pw = input.value;
+  const bar = document.getElementById('password-strength-bar');
+  const label = document.getElementById('password-strength-label');
+  let score = 0;
+  if (pw.length >= 6) score++;
+  if (pw.length >= 10) score++;
+  if (/[A-Z]/.test(pw)) score++;
+  if (/[0-9]/.test(pw)) score++;
+  if (/[^A-Za-z0-9]/.test(pw)) score++;
+  const pct = (score / 5) * 100;
+  const colors = ['var(--danger)', 'var(--danger)', 'var(--warning)', 'var(--warning)', 'var(--success)', 'var(--success)'];
+  const labels = ['', 'Very Weak', 'Weak', 'Fair', 'Strong', 'Very Strong'];
+  bar.style.width = pct + '%';
+  bar.style.background = colors[score];
+  label.textContent = pw ? labels[score] : '';
+  label.style.color = colors[score];
+}
+
+function changePage(dir) {
+  pageNum = Math.max(1, Math.min(totalPages, pageNum + dir));
+  document.getElementById('page-current').textContent = `Page ${pageNum} of ${totalPages}`;
+  document.getElementById('page-prev').disabled = pageNum === 1;
+  document.getElementById('page-next').disabled = pageNum === totalPages;
+  const container = document.getElementById('paginated-content');
+  container.innerHTML = '';
+  for (let i = 1; i <= 6; i++) {
+    const idx = (pageNum - 1) * 6 + i;
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.id = `page-item-${idx}`;
+    card.innerHTML = `<div class="card-title">Item ${idx}</div><div class="card-body">Page ${pageNum} item ${i}</div>`;
+    container.appendChild(card);
+  }
+}
+</script>
+{% endblock %}

@@ -1,0 +1,9 @@
+robotframework==7.5
+robotframework-seleniumlibrary==6.9.0
+robotframework-requests==0.9.7
+robotframework-faker==6.0.0
+selenium==4.51.0
+webdriver-manager==4.1.2
+flask==3.1.3
+requests==2.34.2
+faker==40.43.0

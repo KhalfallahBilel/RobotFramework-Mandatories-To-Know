@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block title %}Login{% endblock %}
+{% block content %}
+<div class="container-narrow" style="min-height:80vh;display:flex;flex-direction:column;justify-content:center">
+  <div style="text-align:center;margin-bottom:2rem">
+    <div style="font-size:3rem;margin-bottom:0.75rem">🔐</div>
+    <h1 style="font-size:1.75rem;font-weight:700;margin-bottom:0.5rem">Sign In</h1>
+    <p style="color:var(--text-muted)">Access your dashboard and admin features</p>
+  </div>
+
+  <div class="form-card" id="login-form-container">
+    {% if error %}
+    <div class="form-alert error" id="login-error-message" role="alert">{{ error }}</div>
+    {% endif %}
+
+    <form method="POST" action="{{ url_for('login') }}" id="login-form" novalidate>
+      <div class="form-group">
+        <label for="username">Username <span class="required">*</span></label>
+        <input
+          type="text"
+          id="username"
+          name="username"
+          placeholder="Enter your username"
+          autocomplete="username"
+          required
+          autofocus
+        >
+        <span class="form-hint">Try: <code>admin</code> / <code>user1</code> / <code>user2</code></span>
+      </div>
+      <div class="form-group">
+        <label for="password">Password <span class="required">*</span></label>
+        <input
+          type="password"
+          id="password"
+          name="password"
+          placeholder="Enter your password"
+          autocomplete="current-password"
+          required
+        >
+        <span class="form-hint">Password: <code>Admin123!</code> for admin, <code>User123!</code> for users</span>
+      </div>
+      <button type="submit" class="btn btn-primary" id="login-submit-btn" style="width:100%">Sign In</button>
+    </form>
+
+    <div style="text-align:center;margin-top:1.5rem;padding-top:1.5rem;border-top:1px solid var(--border);font-size:0.875rem;color:var(--text-muted)">
+      Don't have an account?
+      <a href="{{ url_for('register') }}" id="link-register" style="color:var(--primary-light);font-weight:600">Register here</a>
+    </div>
+  </div>
+
+  <div style="margin-top:1.5rem;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:1rem">
+    <p style="font-size:0.8rem;font-weight:600;color:var(--text-muted);margin-bottom:0.5rem;text-transform:uppercase;letter-spacing:0.05em">Test Credentials</p>
+    <table style="width:100%;font-size:0.82rem">
+      <thead><tr><th style="text-align:left;padding:0.3rem 0;color:var(--text-muted);font-size:0.75rem">Username</th><th style="text-align:left;padding:0.3rem 0;color:var(--text-muted);font-size:0.75rem">Password</th><th style="text-align:left;padding:0.3rem 0;color:var(--text-muted);font-size:0.75rem">Role</th></tr></thead>
+      <tbody>
+        <tr id="cred-admin"><td>admin</td><td>Admin123!</td><td><span class="badge badge-warning">admin</span></td></tr>
+        <tr id="cred-user1"><td>user1</td><td>User123!</td><td><span class="badge badge-primary">user</span></td></tr>
+        <tr id="cred-user2"><td>user2</td><td>User123!</td><td><span class="badge badge-primary">user</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

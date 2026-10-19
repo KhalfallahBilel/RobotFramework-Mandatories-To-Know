@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block title %}About{% endblock %}
+{% block content %}
+<div class="container" style="max-width:900px">
+  <div style="text-align:center;margin-bottom:3rem">
+    <h1 style="font-size:2rem;font-weight:700;margin-bottom:0.75rem">About RobotApp</h1>
+    <p style="color:var(--text-muted);max-width:600px;margin:0 auto">A practice web application designed to help you learn Robot Framework test automation through hands-on exercises.</p>
+  </div>
+
+  <div class="card-grid" style="margin-bottom:2.5rem">
+    <div class="card" id="about-card-mission">
+      <div style="font-size:2rem;margin-bottom:0.75rem">🎯</div>
+      <div class="card-title">Mission</div>
+      <div class="card-body">Provide a realistic, feature-rich web application to practice real-world test automation scenarios with Robot Framework.</div>
+    </div>
+    <div class="card" id="about-card-features">
+      <div style="font-size:2rem;margin-bottom:0.75rem">⚙</div>
+      <div class="card-title">Features</div>
+      <div class="card-body">Authentication, CRUD operations, forms, tables, modals, API endpoints, dynamic content — all designed for testing.</div>
+    </div>
+    <div class="card" id="about-card-stack">
+      <div style="font-size:2rem;margin-bottom:0.75rem">🛠</div>
+      <div class="card-title">Tech Stack</div>
+      <div class="card-body">Built with Python Flask, vanilla HTML/CSS/JS. No database — all data is in-memory for easy resetting.</div>
+    </div>
+  </div>
+
+  <h2 class="section-title" style="margin-bottom:1.5rem">Meet the Team</h2>
+  <div class="card-grid" id="team-grid">
+    {% for member in team %}
+    <div class="card" id="team-card-{{ loop.index }}" style="display:flex;align-items:center;gap:1rem">
+      <div class="avatar" id="team-avatar-{{ loop.index }}">{{ member.avatar }}</div>
+      <div>
+        <div class="card-title" id="team-name-{{ loop.index }}">{{ member.name }}</div>
+        <div class="card-subtitle" id="team-role-{{ loop.index }}">{{ member.role }}</div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <div style="margin-top:2.5rem;padding:1.5rem;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius)" id="about-version-info">
+    <p class="section-label">Version Information</p>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:1rem;margin-top:1rem">
+      <div><span style="color:var(--text-muted);font-size:0.8rem">App Version</span><br><strong id="about-version">1.0.0</strong></div>
+      <div><span style="color:var(--text-muted);font-size:0.8rem">Framework</span><br><strong id="about-framework">Robot Framework 7.x</strong></div>
+      <div><span style="color:var(--text-muted);font-size:0.8rem">Backend</span><br><strong id="about-backend">Flask 3.x</strong></div>
+      <div><span style="color:var(--text-muted);font-size:0.8rem">Environment</span><br><strong id="about-env">Development</strong></div>
+    </div>
+  </div>
+</div>
+{% endblock %}

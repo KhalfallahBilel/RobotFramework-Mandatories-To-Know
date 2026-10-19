@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block title %}Register{% endblock %}
+{% block content %}
+<div class="container-narrow" style="min-height:80vh;display:flex;flex-direction:column;justify-content:center">
+  <div style="text-align:center;margin-bottom:2rem">
+    <div style="font-size:3rem;margin-bottom:0.75rem">📝</div>
+    <h1 style="font-size:1.75rem;font-weight:700;margin-bottom:0.5rem">Create Account</h1>
+    <p style="color:var(--text-muted)">Join RobotApp to access all features</p>
+  </div>
+
+  <div class="form-card" id="register-form-container">
+    <form method="POST" action="{{ url_for('register') }}" id="register-form" novalidate>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="name">Full Name <span class="required">*</span></label>
+          <input type="text" id="name" name="name" placeholder="Alice Dupont"
+            class="{{ 'is-invalid' if errors.name else '' }}"
+            value="{{ request.form.get('name', '') }}" required>
+          {% if errors.name %}<span class="invalid-feedback" id="error-name">{{ errors.name }}</span>{% endif %}
+        </div>
+        <div class="form-group">
+          <label for="username">Username <span class="required">*</span></label>
+          <input type="text" id="username" name="username" placeholder="alice_d"
+            class="{{ 'is-invalid' if errors.username else '' }}"
+            value="{{ request.form.get('username', '') }}" required autocomplete="username">
+          {% if errors.username %}<span class="invalid-feedback" id="error-username">{{ errors.username }}</span>{% endif %}
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="email">Email Address <span class="required">*</span></label>
+        <input type="email" id="email" name="email" placeholder="alice@example.com"
+          class="{{ 'is-invalid' if errors.email else '' }}"
+          value="{{ request.form.get('email', '') }}" required autocomplete="email">
+        {% if errors.email %}<span class="invalid-feedback" id="error-email">{{ errors.email }}</span>{% endif %}
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="password">Password <span class="required">*</span></label>
+          <input type="password" id="password" name="password" placeholder="Min. 6 characters"
+            class="{{ 'is-invalid' if errors.password else '' }}"
+            required autocomplete="new-password">
+          {% if errors.password %}<span class="invalid-feedback" id="error-password">{{ errors.password }}</span>{% endif %}
+        </div>
+        <div class="form-group">
+          <label for="confirm_password">Confirm Password <span class="required">*</span></label>
+          <input type="password" id="confirm_password" name="confirm_password" placeholder="Repeat password"
+            class="{{ 'is-invalid' if errors.confirm_password else '' }}"
+            required autocomplete="new-password">
+          {% if errors.confirm_password %}<span class="invalid-feedback" id="error-confirm">{{ errors.confirm_password }}</span>{% endif %}
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary" id="register-submit-btn" style="width:100%;margin-top:0.5rem">Create Account</button>
+    </form>
+    <div style="text-align:center;margin-top:1.5rem;padding-top:1.5rem;border-top:1px solid var(--border);font-size:0.875rem;color:var(--text-muted)">
+      Already have an account?
+      <a href="{{ url_for('login') }}" id="link-login" style="color:var(--primary-light);font-weight:600">Sign in</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

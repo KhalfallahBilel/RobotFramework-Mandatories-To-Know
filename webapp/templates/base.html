@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}RobotApp{% endblock %} — Robot Framework Training</title>
+  <meta name="description" content="A practice web application for Robot Framework test automation training.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-container">
+      <a href="{{ url_for('index') }}" class="nav-brand" id="nav-brand">
+        <span class="brand-icon">⚙</span>
+        <span>RobotApp</span>
+      </a>
+      <ul class="nav-links" id="nav-links">
+        <li><a href="{{ url_for('index') }}" id="nav-home" class="nav-link {% if request.endpoint == 'index' %}active{% endif %}">Home</a></li>
+        <li><a href="{{ url_for('products') }}" id="nav-products" class="nav-link {% if 'product' in request.endpoint %}active{% endif %}">Products</a></li>
+        <li><a href="{{ url_for('table') }}" id="nav-table" class="nav-link {% if request.endpoint == 'table' %}active{% endif %}">Data Table</a></li>
+        <li><a href="{{ url_for('alerts') }}" id="nav-alerts" class="nav-link {% if request.endpoint == 'alerts' %}active{% endif %}">Alerts</a></li>
+        <li><a href="{{ url_for('dynamic') }}" id="nav-dynamic" class="nav-link {% if request.endpoint == 'dynamic' %}active{% endif %}">Dynamic</a></li>
+        <li><a href="{{ url_for('contact') }}" id="nav-contact" class="nav-link {% if request.endpoint == 'contact' %}active{% endif %}">Contact</a></li>
+        <li><a href="{{ url_for('about') }}" id="nav-about" class="nav-link {% if request.endpoint == 'about' %}active{% endif %}">About</a></li>
+        {% if session.username %}
+          <li><a href="{{ url_for('dashboard') }}" id="nav-dashboard" class="nav-link {% if request.endpoint == 'dashboard' %}active{% endif %}">Dashboard</a></li>
+          <li><a href="{{ url_for('logout') }}" id="nav-logout" class="btn btn-outline-sm">Logout</a></li>
+        {% else %}
+          <li><a href="{{ url_for('login') }}" id="nav-login" class="btn btn-primary-sm">Login</a></li>
+        {% endif %}
+      </ul>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation">☰</button>
+    </div>
+  </nav>
+
+  <!-- FLASH MESSAGES -->
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      <div class="flash-container" id="flash-container">
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category }}" id="flash-{{ loop.index }}" role="alert">
+            <span>{{ message }}</span>
+            <button class="alert-close" onclick="this.parentElement.remove()">✕</button>
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  {% endwith %}
+
+  <!-- MAIN CONTENT -->
+  <main class="main-content" id="main-content">
+    {% block content %}{% endblock %}
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer" id="footer">
+    <div class="footer-container">
+      <p>🤖 <strong>RobotApp</strong> — Built for Robot Framework training</p>
+      <p class="footer-links">
+        <a href="/api/status" id="footer-api-status" target="_blank">API Status</a> ·
+        <a href="/api/products" id="footer-api-products" target="_blank">API Products</a>
+      </p>
+    </div>
+  </footer>
+
+  <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>

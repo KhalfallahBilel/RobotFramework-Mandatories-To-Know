@@ -1,0 +1,220 @@
+{% extends "base.html" %}
+{% block title %}Alerts & UI Components{% endblock %}
+{% block content %}
+<div class="container">
+  <div class="page-header">
+    <div>
+      <h1 class="page-title">UI Components</h1>
+      <p class="page-subtitle">Tabs, Accordion, Modals, Tooltips, Alerts — all interactive elements</p>
+    </div>
+  </div>
+
+  <!-- TABS -->
+  <section style="margin-bottom:2.5rem" id="tabs-section">
+    <h2 class="section-title">Tabs</h2>
+    <div data-tabs>
+      <div class="tabs">
+        <button class="tab-btn active" data-tab="tab-overview" id="tab-btn-overview">Overview</button>
+        <button class="tab-btn" data-tab="tab-details" id="tab-btn-details">Details</button>
+        <button class="tab-btn" data-tab="tab-settings" id="tab-btn-settings">Settings</button>
+        <button class="tab-btn" data-tab="tab-api" id="tab-btn-api">API</button>
+      </div>
+      <div id="tab-overview" class="tab-panel active" style="padding:1rem 0">
+        <p style="color:var(--text-muted)">This is the <strong>Overview</strong> tab content. Robot Framework can click tabs and verify active tab content.</p>
+        <div class="card" style="margin-top:1rem;max-width:400px" id="tab-overview-card">
+          <div class="card-title">Overview Card</div>
+          <div class="card-body">This card is only visible on the Overview tab.</div>
+        </div>
+      </div>
+      <div id="tab-details" class="tab-panel" style="padding:1rem 0">
+        <p style="color:var(--text-muted)">This is the <strong>Details</strong> tab. It contains technical information.</p>
+        <ul style="margin-top:1rem;display:flex;flex-direction:column;gap:0.5rem;font-size:0.875rem;color:var(--text-muted)" id="details-list">
+          <li>✓ Version: 1.0.0</li>
+          <li>✓ Environment: Development</li>
+          <li>✓ Framework: Flask 3.x</li>
+          <li>✓ Database: In-memory</li>
+        </ul>
+      </div>
+      <div id="tab-settings" class="tab-panel" style="padding:1rem 0">
+        <p style="color:var(--text-muted)">Configure your preferences here.</p>
+        <div style="margin-top:1rem;max-width:400px">
+          <div class="form-group">
+            <label class="form-check" for="setting-notifications">
+              <input type="checkbox" id="setting-notifications" checked> Enable Notifications
+            </label>
+          </div>
+          <div class="form-group">
+            <label class="form-check" for="setting-dark">
+              <input type="checkbox" id="setting-dark" checked> Dark Mode
+            </label>
+          </div>
+          <button class="btn btn-primary btn-sm" id="btn-save-settings">Save Settings</button>
+        </div>
+      </div>
+      <div id="tab-api" class="tab-panel" style="padding:1rem 0">
+        <p style="color:var(--text-muted)">Test the API endpoint directly from here.</p>
+        <button class="btn btn-secondary" id="btn-fetch-api" onclick="fetchApiStatus()">Fetch /api/status</button>
+        <pre id="api-status-result" style="margin-top:1rem;padding:1rem;background:rgba(0,0,0,0.3);border-radius:var(--radius-sm);font-size:0.8rem;color:var(--accent);border:1px solid var(--border);white-space:pre-wrap">Click the button to load...</pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- ACCORDION -->
+  <section style="margin-bottom:2.5rem" id="accordion-section">
+    <h2 class="section-title">Accordion (FAQ)</h2>
+    <div class="accordion" id="faq-accordion">
+      <div class="accordion-item" id="faq-1">
+        <button class="accordion-header" id="faq-header-1">
+          What is Robot Framework?
+          <span class="accordion-icon">▼</span>
+        </button>
+        <div class="accordion-body">
+          <div class="accordion-body-inner" id="faq-body-1">
+            Robot Framework is a generic open source automation framework. It can be used for test automation and robotic process automation (RPA). It has easy syntax and can be extended with libraries like SeleniumLibrary.
+          </div>
+        </div>
+      </div>
+      <div class="accordion-item" id="faq-2">
+        <button class="accordion-header" id="faq-header-2">
+          How do I install Robot Framework?
+          <span class="accordion-icon">▼</span>
+        </button>
+        <div class="accordion-body">
+          <div class="accordion-body-inner" id="faq-body-2">
+            Install via pip: <code>pip install robotframework robotframework-seleniumlibrary</code>. You'll also need a WebDriver for your browser (e.g., ChromeDriver for Google Chrome).
+          </div>
+        </div>
+      </div>
+      <div class="accordion-item" id="faq-3">
+        <button class="accordion-header" id="faq-header-3">
+          What browsers are supported?
+          <span class="accordion-icon">▼</span>
+        </button>
+        <div class="accordion-body">
+          <div class="accordion-body-inner" id="faq-body-3">
+            SeleniumLibrary supports Chrome, Firefox, Edge, Safari, and more. We recommend Chrome with ChromeDriver for best compatibility in this training environment.
+          </div>
+        </div>
+      </div>
+      <div class="accordion-item" id="faq-4">
+        <button class="accordion-header" id="faq-header-4">
+          How do I run a test suite?
+          <span class="accordion-icon">▼</span>
+        </button>
+        <div class="accordion-body">
+          <div class="accordion-body-inner" id="faq-body-4">
+            Use the command: <code>robot tests/</code> or target a specific file: <code>robot tests/login.robot</code>. Results are saved as HTML reports in the output directory.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MODALS -->
+  <section style="margin-bottom:2.5rem" id="modals-section">
+    <h2 class="section-title">Modals</h2>
+    <div style="display:flex;gap:0.75rem;flex-wrap:wrap">
+      <button class="btn btn-primary" data-modal="modal-info" id="btn-open-modal-info">Open Info Modal</button>
+      <button class="btn btn-danger" data-modal="modal-confirm" id="btn-open-modal-confirm">Open Confirm Modal</button>
+      <button class="btn btn-secondary" data-modal="modal-form" id="btn-open-modal-form">Open Form Modal</button>
+    </div>
+  </section>
+
+  <!-- ALERTS -->
+  <section style="margin-bottom:2.5rem" id="static-alerts-section">
+    <h2 class="section-title">Static Alert Styles</h2>
+    <div style="display:flex;flex-direction:column;gap:0.75rem">
+      <div class="alert alert-success" style="position:static;animation:none" id="static-alert-success">✅ This is a success alert message.</div>
+      <div class="alert alert-danger" style="position:static;animation:none" id="static-alert-danger">❌ This is an error alert message.</div>
+      <div class="alert alert-warning" style="position:static;animation:none" id="static-alert-warning">⚠ This is a warning alert message.</div>
+      <div class="alert alert-info" style="position:static;animation:none" id="static-alert-info">ℹ This is an info alert message.</div>
+    </div>
+  </section>
+
+  <!-- TOOLTIPS -->
+  <section style="margin-bottom:2.5rem" id="tooltips-section">
+    <h2 class="section-title">Tooltips</h2>
+    <div style="display:flex;gap:1.5rem;flex-wrap:wrap;padding:1rem 0">
+      <span data-tooltip="This is a helpful tooltip!" id="tooltip-1" class="tag">Hover me</span>
+      <span data-tooltip="Robot Framework can verify tooltip visibility" id="tooltip-2" class="tag">And me</span>
+      <button class="btn btn-secondary" data-tooltip="Buttons can have tooltips too" id="tooltip-btn">Tooltip Button</button>
+    </div>
+  </section>
+
+  <!-- PROGRESS BARS -->
+  <section style="margin-bottom:2.5rem" id="progress-section">
+    <h2 class="section-title">Progress Bars</h2>
+    <div style="display:flex;flex-direction:column;gap:1rem">
+      {% for item in [('Test Coverage', 87), ('Automation Rate', 62), ('Pass Rate', 95), ('Performance Score', 78)] %}
+      <div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:0.4rem;font-size:0.875rem">
+          <span>{{ item[0] }}</span>
+          <span id="progress-value-{{ loop.index }}" style="color:var(--accent);font-weight:600">{{ item[1] }}%</span>
+        </div>
+        <div class="progress-bar-container">
+          <div class="progress-bar" id="progress-bar-{{ loop.index }}" data-value="{{ item[1] }}" style="width:0%"></div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </section>
+</div>
+
+<!-- MODAL: INFO -->
+<div class="modal-overlay" id="modal-info" role="dialog" aria-modal="true" aria-labelledby="modal-info-title">
+  <div class="modal">
+    <div class="modal-header">
+      <h2 class="modal-title" id="modal-info-title">Information</h2>
+      <button class="modal-close" aria-label="Close" id="modal-info-close">✕</button>
+    </div>
+    <p style="color:var(--text-muted);margin-bottom:1.5rem" id="modal-info-body">
+      This is an info modal. Robot Framework can open it, read its content, and close it.
+    </p>
+    <div style="display:flex;gap:0.75rem">
+      <button class="btn btn-primary" onclick="closeModal('modal-info')" id="modal-info-btn-ok">Got it</button>
+      <button class="btn btn-secondary modal-close" onclick="closeModal('modal-info')" id="modal-info-btn-cancel">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: CONFIRM -->
+<div class="modal-overlay" id="modal-confirm" role="dialog" aria-modal="true" aria-labelledby="modal-confirm-title">
+  <div class="modal">
+    <div class="modal-header">
+      <h2 class="modal-title" id="modal-confirm-title">⚠ Confirm Action</h2>
+      <button class="modal-close" onclick="closeModal('modal-confirm')" id="modal-confirm-close">✕</button>
+    </div>
+    <p style="color:var(--text-muted);margin-bottom:1.5rem" id="modal-confirm-body">
+      Are you sure you want to perform this action? This cannot be undone.
+    </p>
+    <div style="display:flex;gap:0.75rem">
+      <button class="btn btn-danger" onclick="closeModal('modal-confirm')" id="modal-confirm-yes">Yes, Delete</button>
+      <button class="btn btn-secondary" onclick="closeModal('modal-confirm')" id="modal-confirm-no">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: FORM -->
+<div class="modal-overlay" id="modal-form" role="dialog" aria-modal="true" aria-labelledby="modal-form-title">
+  <div class="modal">
+    <div class="modal-header">
+      <h2 class="modal-title" id="modal-form-title">Quick Note</h2>
+      <button class="modal-close" onclick="closeModal('modal-form')" id="modal-form-close">✕</button>
+    </div>
+    <form id="modal-form-inner" onsubmit="event.preventDefault();closeModal('modal-form')">
+      <div class="form-group">
+        <label for="modal-note-title">Title</label>
+        <input type="text" id="modal-note-title" name="modal_title" placeholder="Enter a title">
+      </div>
+      <div class="form-group">
+        <label for="modal-note-body">Note</label>
+        <textarea id="modal-note-body" name="modal_body" rows="3" placeholder="Write your note..."></textarea>
+      </div>
+      <div style="display:flex;gap:0.75rem">
+        <button type="submit" class="btn btn-primary" id="modal-form-submit">Save Note</button>
+        <button type="button" class="btn btn-secondary" onclick="closeModal('modal-form')" id="modal-form-cancel">Cancel</button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

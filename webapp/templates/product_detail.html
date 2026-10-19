@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block title %}{{ product.name }}{% endblock %}
+{% block content %}
+<div class="container" style="max-width:800px">
+  <div class="breadcrumb">
+    <a href="{{ url_for('index') }}">Home</a>
+    <span class="sep">›</span>
+    <a href="{{ url_for('products') }}">Products</a>
+    <span class="sep">›</span>
+    <span id="breadcrumb-product-name">{{ product.name }}</span>
+  </div>
+
+  <div class="form-card" id="product-detail-card">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:1rem;margin-bottom:1.5rem">
+      <div>
+        <span class="product-category" id="detail-category">{{ product.category }}</span>
+        <h1 style="font-size:1.75rem;font-weight:700;margin-top:0.5rem" id="detail-name">{{ product.name }}</h1>
+        <p style="color:var(--text-muted);margin-top:0.5rem" id="detail-description">{{ product.description }}</p>
+      </div>
+      <div style="text-align:right">
+        <div class="product-price" style="font-size:2rem" id="detail-price">${{ "%.2f"|format(product.price) }}</div>
+        <div class="product-stock {% if product.stock == 0 %}out{% endif %}" id="detail-stock">
+          {% if product.stock == 0 %}
+            <span class="badge badge-danger">Out of Stock</span>
+          {% elif product.stock < 20 %}
+            <span class="badge badge-warning">{{ product.stock }} left</span>
+          {% else %}
+            <span class="badge badge-success">{{ product.stock }} in stock</span>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.5rem;padding:1rem;background:rgba(255,255,255,0.03);border-radius:var(--radius-sm)">
+      <div><span style="color:var(--text-muted);font-size:0.8rem">Product ID</span><br><strong id="detail-id">{{ product.id }}</strong></div>
+      <div><span style="color:var(--text-muted);font-size:0.8rem">Category</span><br><strong id="detail-cat">{{ product.category }}</strong></div>
+      <div><span style="color:var(--text-muted);font-size:0.8rem">Price</span><br><strong>${{ "%.2f"|format(product.price) }}</strong></div>
+      <div><span style="color:var(--text-muted);font-size:0.8rem">Stock</span><br><strong>{{ product.stock }} units</strong></div>
+    </div>
+
+    <div style="display:flex;gap:0.75rem;flex-wrap:wrap">
+      <a href="{{ url_for('products') }}" class="btn btn-secondary" id="btn-back-products">← Back to Products</a>
+      {% if session.role == 'admin' %}
+      <a href="{{ url_for('product_edit', product_id=product.id) }}" class="btn btn-primary" id="btn-edit-product">Edit Product</a>
+      <form method="POST" action="{{ url_for('product_delete', product_id=product.id) }}" style="display:inline">
+        <button type="submit" class="btn btn-danger" id="btn-delete-product"
+          data-confirm="Delete '{{ product.name }}'? This cannot be undone.">Delete Product</button>
+      </form>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}
